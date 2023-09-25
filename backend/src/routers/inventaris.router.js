@@ -5,12 +5,12 @@ const router = express.Router()
 const InventarisController = require('../controllers/inventaris.controller')
 const { uploadFile } = require("../middlewares/uploadFile");
 
-const uploadLeader = uploadFile.fields([{ name: 'foto', maxCount: 1 }])
+const uploadInventaris = uploadFile.fields([{ name: 'foto', maxCount: 1 }])
 
 router.get('/', InventarisController.index);
-router.post('/', uploadLeader, InventarisController.create);
+router.post('/', uploadInventaris, InventarisController.create);
 router.get('/:id', InventarisController.show);
-router.put('/:id', uploadLeader, InventarisController.update);
+router.put('/:id', uploadInventaris, InventarisController.update);
 router.delete('/:id', InventarisController.delete);
 router.get('/kategori/:kategori', InventarisController.getInventoryByCategory);
 
