@@ -3,50 +3,42 @@ const Schema = mongoose.Schema;
 
 const ProposalSchema = new Schema({
     namaKegiatan: {
-        type: String,
-        required: [true, 'Nama kegiatan diperlukan']
+        type: String
     },
     tempat: {
-        type: String,
-        required: [true, 'Tempat kegiatan diperlukan']
+        type: String
     },
     waktuKegiatan: {
         type: String,
         validate: {
-            validator: function(v) {
+            validator: function (v) {
                 return /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
             },
             message: props => `${props.value} format time adalah Jam:Menit`
-        },
-        required: [true, 'Waktu kegiatan diperlukan']
+        }
     },
     jumlahMahasiswaTerlibat: {
-        type: Number,
-        required: [true, 'Jumlah mahasiswa terlibat diperlukan']
+        type: Number
     },
     jumlahDosenTerlibat: {
-        type: Number,
-        required: [true, 'Jumlah dosen terlibat diperlukan']
+        type: Number
     },
     biayaYangDiajukan: {
-        type: Number,
-        required: [true, 'Biaya yang diajukan diperlukan']
+        type: Number
     },
     biayaYangDigunakan: {
-        type: Number,
-        required: [true, 'Biaya yang digunakan diperlukan']
+        type: Number
     },
     narahubung: {
-        type: String,
-        required: [true, 'Narahubung diperlukan']
+        type: String
     },
     proposalFile: {
         type: Object,
     }
 },
-{
-    timestamps: true
-});
+    {
+        timestamps: true
+    });
 
 const Proposal = mongoose.model('Proposal', ProposalSchema);
 module.exports = Proposal;

@@ -18,18 +18,35 @@ exports.index = async (req, res, next) => {
     }
 }
 
+exports.getInventoryByCategory = async (req, res, next) => {
+    const kategori = req.params.kategori;
+    try {
+        // isi fungsi
+        const barang = await InventarisModel.find({ kategori: kategori });
+        if (!barang) {
+            const error = new ErrorHandler(400, `Data Inventaris dengan kategori ${kategori} tidak ditemukan`);
+            return next(error);
+        }
+        res.status(200).json({
+            error: false,
+            data: barang
+        })
+    } catch (error) {
+        return next(error);
+    }
+}
+
 exports.create = async (req, res, next) => {
     try {
         const { namaBarang, kategori, jumlah, unit, keadaan } = req.body;
         const cekBarang = await InventarisModel.findOne({ namaBarang: namaBarang });
-        
+
         if (cekBarang) {
             const error = new ErrorHandler(400, "Barang sudah ada");
             return next(error);
-        } 
-        
+        }
+
         let foto = {};
-        
         if (req.files && req.files.foto) {
             foto = await uploadFileToGdrive(req.files);
         }
@@ -60,7 +77,7 @@ exports.show = async (req, res, next) => {
     const idBarang = req.params.id
     try {
         // isi fungsi
-        const barang = await InventarisModel.findOne({ idBarang: idBarang });
+        const barang = await InventarisModel.findOne({ _id: idBarang });
         if (!barang) {
             const error = new ErrorHandler(400, "Barang tidak ditemukan");
             return next(error);
@@ -79,8 +96,8 @@ exports.update = async (req, res, next) => {
     const idBarang = req.params.id;
     try {
         const { namaBarang, kategori, jumlah, unit, keadaan } = req.body;
-        const barang = await InventarisModel.findOne({ idBarang: idBarang });
-        
+        const barang = await InventarisModel.findOne({ _id: idBarang });
+
         if (!barang) {
             const error = new ErrorHandler(400, `Barang dengan id ${idBarang} tidak ada`);
             return next(error);
@@ -120,7 +137,7 @@ exports.delete = async (req, res, next) => {
     const idBarang = req.params.id
     try {
         // isi fungsi
-        const barang = await InventarisModel.findOne({ idBarang: idBarang });
+        const barang = await InventarisModel.findByIdAndRemove(idBarang);
         if (!barang) {
             const error = new ErrorHandler(404, "Barang tidak ditemukan");
             return next(error);

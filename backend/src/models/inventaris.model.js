@@ -2,27 +2,22 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const InventarisSchema = new Schema({
     namaBarang: {
-        type: String,
-        required: [true, 'Nama barang diperlukan']
+        type: String
     },
     kategori: {
-        type: String,
-        required: [true, 'Kategori barang diperlukan']
+        type: String
     },
     jumlah: {
-        type: Number,
-        required: [true, 'Jumlah barang diperlukan']
+        type: Number
     },
     unit: {
-        type: String,
-        required: [true, 'Unit barang diperlukan']
+        type: String
     },
     keadaan: {
-        type: String,
-        required: [true, 'Keadaan barang diperlukan']
+        type: String
     },
     foto: {
-        type: Object,
+        type: Object
     }
 },
     {

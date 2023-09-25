@@ -26,6 +26,10 @@ exports.create = async (req, res, next) => {
             const error = new ErrorHandler(400, "Proposal dengan nama kegiatan tersebut sudah ada");
             return next(error);
         } else {
+            let proposalFile = {};
+            if (req.files && req.files.proposal) {
+                proposalFile = await uploadFileToGdrive(req.files);
+            }
             const proposal = new ProposalModel({
                 namaKegiatan: namaKegiatan,
                 tempat: tempat,
@@ -33,8 +37,9 @@ exports.create = async (req, res, next) => {
                 jumlahDosenTerlibat: jumlahDosenTerlibat,
                 biayaYangDiajukan: biayaYangDiajukan,
                 biayaYangDigunakan: biayaYangDigunakan,
-                waktuKegiatan : waktuKegiatan,
-                narahubung: narahubung
+                waktuKegiatan: waktuKegiatan,
+                narahubung: narahubung,
+                proposalFile: proposalFile,
             });
             await proposal.save();
             res.status(200).json({
@@ -70,16 +75,21 @@ exports.show = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     const idProposal = req.params.id;
     try {
-        const proposal = await ProposalModel.findOne({ idProposal: idProposal });
-        if (!proposal) {
+        const old_proposal = await ProposalModel.findOne({ idProposal: idProposal });
+        if (!old_proposal) {
             const error = new ErrorHandler(400, `Proposal dengan id ${idProposal} tidak ada`);
             return next(error);
         } else {
             const updatedData = req.body;
+            const { proposal } = await uploadFileToGdrive(req.files);
             for (let key in updatedData) {
-                proposal[key] = updatedData[key];
+                old_proposal[key] = updatedData[key];
             }
-            await proposal.save();
+            if (proposal != undefined) {
+                await deleteFile(old_proposal.proposal.fileId);
+                old_proposal.proposal = proposal;
+            }
+            await old_proposal.save();
             res.status(200).json({
                 error: false,
                 message: "Berhasil memperbarui data proposal"
