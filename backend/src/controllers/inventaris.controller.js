@@ -20,34 +20,41 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
     try {
-        // isi fungsi
         const { namaBarang, kategori, jumlah, unit, keadaan } = req.body;
         const cekBarang = await InventarisModel.findOne({ namaBarang: namaBarang });
+        
         if (cekBarang) {
             const error = new ErrorHandler(400, "Barang sudah ada");
             return next(error);
-        } else {
-            const { foto } = await uploadFileToGdrive(req.files);
-            const barang = new InventarisModel({
-                namaBarang: namaBarang,
-                kategori: kategori,
-                jumlah: jumlah,
-                unit: unit,
-                keadaan: keadaan,
-                foto: foto
-            })
-            await barang.save();
-            res.status(200).json({
-                error: false,
-                message: "Berhasil menyimpan data",
-                data: barang
-            });
+        } 
+        
+        let foto = {};
+        
+        if (req.files && req.files.foto) {
+            foto = await uploadFileToGdrive(req.files);
         }
+
+        const barang = new InventarisModel({
+            namaBarang: namaBarang,
+            kategori: kategori,
+            jumlah: jumlah,
+            unit: unit,
+            keadaan: keadaan,
+            foto: foto.foto
+        });
+
+        await barang.save();
+        res.status(200).json({
+            error: false,
+            message: "Berhasil menyimpan data",
+            data: barang
+        });
     } catch (error) {
         console.error(error);
         return next(error);
     }
 }
+
 
 exports.show = async (req, res, next) => {
     const idBarang = req.params.id
@@ -69,11 +76,11 @@ exports.show = async (req, res, next) => {
 }
 
 exports.update = async (req, res, next) => {
-    const idBarang = req.params.id
+    const idBarang = req.params.id;
     try {
-        // isi fungsi
         const { namaBarang, kategori, jumlah, unit, keadaan } = req.body;
         const barang = await InventarisModel.findOne({ idBarang: idBarang });
+        
         if (!barang) {
             const error = new ErrorHandler(400, `Barang dengan id ${idBarang} tidak ada`);
             return next(error);

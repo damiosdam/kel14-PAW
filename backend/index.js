@@ -27,8 +27,9 @@ app.use(cors({
 
 // ? Routes
 const Inventaris = require("./src/routers/inventaris.router.js");
-
+const Proposal = require("./src/routers/proposal.router.js");
 app.use("/api/v1/inventaris", Inventaris);
+app.use("/api/v1/proposal", Proposal);
 // ? End Routes
 
 // ? Error handling\
