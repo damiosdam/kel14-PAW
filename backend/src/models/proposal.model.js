@@ -15,7 +15,7 @@ const ProposalSchema = new Schema({
             validator: function (v) {
                 return /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
             },
-            message: props => `${props.value} format time adalah Jam:Menit`
+            message: props => `${props.value} | Format time adalah Jam:Menit`
         }
     },
     jumlahMahasiswaTerlibat: {
