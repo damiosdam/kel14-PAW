@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const ProposalSchema = new Schema({
     namaKegiatan: {
@@ -23,22 +24,23 @@ const ProposalSchema = new Schema({
     jumlahDosenTerlibat: {
         type: Number
     },
-    biayaYangDiajukan: {
+    biayaYangDigunakan: {
         type: Number
     },
-    biayaYangDigunakan: {
+    biayaYangDiajukan: {
         type: Number
     },
     narahubung: {
         type: String
     },
     proposalFile: {
-        type: Object,
+        type: Object
     }
 },
     {
         timestamps: true
-    });
+    }
+)
 
-const Proposal = mongoose.model('Proposal', ProposalSchema);
-module.exports = Proposal;
+const Proposal = mongoose.model('Proposal', ProposalSchema)
+module.exports = Proposal

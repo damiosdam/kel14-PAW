@@ -11,7 +11,7 @@ exports.deleteFile = async (fileId) => {
 }
 
 exports.uploadFileToGdrive = async (filesLeader) => {
-    let foto, proposal, lpj, surat, namaFile;
+    let foto, proposalFile, lpj, surat, namaFile;
     let files = [];
     const fileKeys = Object.keys(filesLeader);
     if (fileKeys.length == 1) {
@@ -29,9 +29,9 @@ exports.uploadFileToGdrive = async (filesLeader) => {
         if (file.fieldname === 'foto') {
             parents = [process.env.URI_GDRIVE_FOTO]
             namaFile = "Foto"
-        } else if (file.fieldname === 'proposal') {
+        } else if (file.fieldname === 'proposalFile') {
             parents = [process.env.URI_GDRIVE_PROPOSAL]
-            namaFile = "Proposal"
+            namaFile = "ProposalFile"
         } else if (file.fieldname === 'lpj') {
             parents = [process.env.URI_GDRIVE_LPJ]
             namaFile = "LPJ"
@@ -67,13 +67,13 @@ exports.uploadFileToGdrive = async (filesLeader) => {
         const exportLink = "https://drive.google.com/uc?export=view&id=" + fileId
         if (file.fieldname === 'foto') {
             foto = { originalFileName, exportLink, downloadLink, viewLink, fileId }
-        } else if (file.fieldname === 'proposal') {
-            proposal = { originalFileName, exportLink, downloadLink, viewLink, fileId }
+        } else if (file.fieldname === 'proposalFile') {
+            proposalFile = { originalFileName, exportLink, downloadLink, viewLink, fileId }
         } else if (file.fieldname === 'lpj') {
             lpj = { originalFileName, exportLink, downloadLink, viewLink, fileId }
         } else {
             surat = { originalFileName, exportLink, downloadLink, viewLink, fileId }
         }
     }
-    return { foto, proposal, lpj, surat }
+    return { foto, proposalFile, lpj, surat }
 }

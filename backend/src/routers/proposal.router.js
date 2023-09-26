@@ -1,15 +1,16 @@
-const express = require('express');
-const router = express.Router();
 
-const ProposalController = require('../controllers/proposal.controller');
-const { uploadFile } = require("../middlewares/uploadFile");
+const express = require('express')
+const router = express.Router()
 
-const uploadProposal = uploadFile.fields([{ name: 'proposal', maxCount: 1 }]);
+const ProposalController = require('../controllers/proposal.controller')
+const { uploadFile } = require("../middlewares/uploadFile")
 
-router.get('/', ProposalController.index);
-router.post('/', uploadProposal, ProposalController.create);
-router.get('/:id', ProposalController.show);
-router.put('/:id', uploadProposal, ProposalController.update);
-router.delete('/:id', ProposalController.delete);
+const uploadProposal = uploadFile.fields([{ name: 'proposalFile', maxCount: 1 }])
 
-module.exports = router;
+router.get('/', ProposalController.index)
+router.post('/', uploadProposal, ProposalController.create)
+router.get('/:id', ProposalController.show)
+router.put('/:id', uploadProposal, ProposalController.update)
+router.delete('/:id', ProposalController.delete)
+
+module.exports = router
