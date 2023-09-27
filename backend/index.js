@@ -28,8 +28,10 @@ app.use(cors({
 // ? Routes
 const Inventaris = require("./src/routers/inventaris.router.js");
 const Proposal = require("./src/routers/proposal.router.js");
+const Persuratan = require("./src/routers/persuratan.router.js");
 app.use("/api/v1/inventaris", Inventaris);
 app.use("/api/v1/proposal", Proposal);
+app.use("/api/v1/persuratan", Persuratan);
 // ? End Routes
 
 // ? Error handling\
