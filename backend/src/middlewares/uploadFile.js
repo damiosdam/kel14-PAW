@@ -24,7 +24,7 @@ exports.uploadFile = multer({
         }
     }),
     limits: {
-        fileSize: 2 * 1024 * 1024, // no larger than 2mb
+        fileSize: 10 * 1024 * 1024, // no larger than 10mb
     },
     fileFilter
 })

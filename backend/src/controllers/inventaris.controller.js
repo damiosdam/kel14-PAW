@@ -142,6 +142,7 @@ exports.delete = async (req, res, next) => {
             const error = new ErrorHandler(404, "Barang tidak ditemukan");
             return next(error);
         }
+        await deleteFile(barang.foto.fileId);
         res.status(200).json({
             error: false,
             message: "Berhasil menghapus barang"

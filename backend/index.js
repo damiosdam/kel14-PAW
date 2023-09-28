@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const compression = require('compression');
+const morgan = require('morgan');
 
 // ? START THE APP
 const app = express();
@@ -18,7 +19,7 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(helmet());
-// app.use(morgan("dev"));
+app.use(morgan("dev"));
 app.use(cors({
     origin: ["http://localhost:3000", process.env.CLIENT_URL],
     methods: "GET,POST,PUT,DELETE",
