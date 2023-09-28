@@ -28,7 +28,6 @@ exports.create = async (req, res, next) => {
             nimAnggota, 
             emailAnggota, 
             posisiAnggota, 
-            fotoAnggota, 
             statusAnggota,
             nomorHpAnggota,
             ttlAnggota,
@@ -42,6 +41,11 @@ exports.create = async (req, res, next) => {
             return next(error);
         }
 
+        let fotoAnggota = {};
+        if(req.files && req.files.fotoAnggota) {
+            fotoAnggota = await uploadFileToGdrive(req.files);
+        }
+
         const anggota = new AnggotaModel({
             nomorAnggota : nomorAnggota, 
             namaAnggota : namaAnggota, 
@@ -50,7 +54,7 @@ exports.create = async (req, res, next) => {
             nimAnggota : nimAnggota, 
             emailAnggota : emailAnggota, 
             posisiAnggota : posisiAnggota, 
-            fotoAnggota : fotoAnggota, 
+            fotoAnggota : fotoAnggota.fotoAnggota, 
             statusAnggota : statusAnggota,
             nomorHpAnggota : nomorHpAnggota,
             ttlAnggota : ttlAnggota,
@@ -99,7 +103,6 @@ exports.update = async (req, res, next) => {
             nimAnggota, 
             emailAnggota, 
             posisiAnggota, 
-            fotoAnggota, 
             statusAnggota,
             nomorHpAnggota,
             ttlAnggota,
@@ -112,7 +115,7 @@ exports.update = async (req, res, next) => {
             const error = new ErrorHandler(400, "Data Anggota Tidak Ditemukan");
             return next(error);
         } else {
-            const {anggotaFile} = await uploadFileToGdrive(req.files);
+            const {fotoAnggota} = await uploadFileToGdrive(req.files);
             if(namaAnggota != undefined) {
                 anggota.namaAnggota = namaAnggota;
             }
@@ -131,9 +134,6 @@ exports.update = async (req, res, next) => {
             if(posisiAnggota != undefined) {
                 anggota.posisiAnggota = posisiAnggota;
             }
-            if(fotoAnggota != undefined) {
-                anggota.fotoAnggota = anggotaFile;
-            }
             if(statusAnggota != undefined) {
                 anggota.statusAnggota = statusAnggota;
             }
@@ -148,6 +148,10 @@ exports.update = async (req, res, next) => {
             }
             if(periodeAnggota != undefined) {
                 anggota.periodeAnggota = periodeAnggota;
+            }
+            if(fotoAnggota != undefined) {
+                await deleteFile(anggota.fotoAnggota.fileId);
+                anggota.fotoAnggota = fotoAnggota;
             }
             anggota.save();
             res.status(200).json({
