@@ -30,9 +30,11 @@ app.use(cors({
 const Inventaris = require("./src/routers/inventaris.router.js");
 const Proposal = require("./src/routers/proposal.router.js");
 const Persuratan = require("./src/routers/persuratan.router.js");
+const Anggota = require("./src/routers/anggota.router.js");
 app.use("/api/v1/inventaris", Inventaris);
 app.use("/api/v1/proposal", Proposal);
 app.use("/api/v1/persuratan", Persuratan);
+app.use("/api/v1/anggota", Anggota);
 // ? End Routes
 
 // ? Error handling\
