@@ -24,7 +24,6 @@ export default function DashboardLayout({ children }) {
                 }}
             >
                 <Navbar openNav={openNav} onCloseNav={() => setOpenNav(false)} />
-
                 <Main>{children}</Main>
             </Box>
         </>

@@ -28,6 +28,7 @@ export default function Router() {
                 { path: 'anggota/:id', element: <AnggotaPage /> },
                 { path: 'inventaris', element: <InventarisPage /> },
                 { path: 'inventaris/:id', element: <InventarisPage /> },
+                { path: 'inventaris/tambah', element: <InventarisPage /> },
                 { path: 'persuratan', element: <PersuratanPage /> },
                 { path: 'persuratan/:id', element: <PersuratanPage /> },
                 { path: 'proposal', element: <ProposalPage /> },

@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import SayHi from '../sections/say-hi';
+import Top from '../components/top';
 export default function AppPage() {
     return (
         <>
             <Helmet>
-                <title> Manajemen UKM </title>
+                <title>Inventaris</title>
             </Helmet>
-            <SayHi />
+            <Top namaPage="Inventaris" target="/inventaris/tambah" />
+
         </>
     );
 }
