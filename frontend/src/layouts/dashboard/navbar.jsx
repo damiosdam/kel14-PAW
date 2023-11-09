@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
+import Link from '@mui/material/Link';
 import ListItemButton from '@mui/material/ListItemButton';
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
@@ -11,7 +13,6 @@ import { RouterLink } from '../../routes/components';
 import { usePathname } from '../../routes/hooks';
 
 import { useResponsive } from '../../hooks/use-responsive';
-
 
 import Scrollbar from '../../components/scrollbar';
 
@@ -52,6 +53,10 @@ export default function Navbar({ openNav, onCloseNav }) {
                 },
             }}
         >
+            <Link href="/" sx={{ display: 'contents' }}>
+                <Button variant="text" size="large" sx={{ mt: 3, mb: 3 }}>UKM Manage</Button>
+            </Link>
+
             {renderMenu}
 
             <Box sx={{ flexGrow: 1 }} />
