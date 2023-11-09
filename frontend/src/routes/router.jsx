@@ -25,10 +25,15 @@ export default function Router() {
             children: [
                 { element: <Home />, index: true },
                 { path: 'anggota', element: <AnggotaPage /> },
+                { path: 'anggota/:id', element: <AnggotaPage /> },
                 { path: 'inventaris', element: <InventarisPage /> },
+                { path: 'inventaris/:id', element: <InventarisPage /> },
                 { path: 'persuratan', element: <PersuratanPage /> },
+                { path: 'persuratan/:id', element: <PersuratanPage /> },
                 { path: 'proposal', element: <ProposalPage /> },
+                { path: 'proposal/id', element: <ProposalPage /> },
                 { path: 'lpj', element: <LPJPage /> },
+                { path: 'lpj/:id', element: <LPJPage /> },
             ],
         },
         {
