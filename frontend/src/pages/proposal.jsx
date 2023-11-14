@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
@@ -94,6 +95,8 @@ export default function ProposalPage() {
                 </Typography>
                 <Button
                     variant="contained"
+                    component={Link}
+                    to="/proposal/create"
                     sx={{
                         borderRadius: 2,
                         bgcolor: '#D9D9D9',
