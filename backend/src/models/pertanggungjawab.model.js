@@ -24,7 +24,7 @@ const LPJSchema = new Schema(
       type: Number,
     },
     narahubung: {
-      type: Number,
+      type: String,
     },
     fileLPJ: {
       type: Object,
