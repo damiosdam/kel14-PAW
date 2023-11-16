@@ -9,7 +9,7 @@ import NoteAltIcon from '@mui/icons-material/NoteAlt';
 const navConfig = [
   {
     title: 'dashboard',
-    path: '/',
+    path: '/dashboard',
     icon: <AccessTimeFilledIcon />,
   },
   {

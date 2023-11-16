@@ -7,6 +7,8 @@ import CreateProposal from '../components/ProposalPage/CreateProposal'
 export const Home = lazy(() => import('../pages/app'));
 export const AnggotaPage = lazy(() => import('../pages/anggota'));
 export const InventarisPage = lazy(() => import('../pages/inventaris'));
+export const TambahInventaris = lazy(() => import('../pages/inventaris/tambah'));
+export const DetailInventaris = lazy(() => import('../pages/inventaris/detail'));
 export const PersuratanPage = lazy(() => import('../pages/persuratan'));
 export const ProposalPage = lazy(() => import('../pages/proposal'));
 export const LPJPage = lazy(() => import('../pages/lpj'));
@@ -16,6 +18,10 @@ export const Page404 = lazy(() => import('../pages/page-not-found'));
 export default function Router() {
     const routes = useRoutes([
         {
+            path: '/',
+            element: <Navigate to="/dashboard" replace />,
+        },
+        {
             element: (
                 <DashboardLayout>
                     <Suspense>
@@ -24,12 +30,12 @@ export default function Router() {
                 </DashboardLayout>
             ),
             children: [
-                { element: <Home />, index: true },
+                { path: 'dashboard', element: <Home />, index: true },
                 { path: 'anggota', element: <AnggotaPage /> },
                 { path: 'anggota/:id', element: <AnggotaPage /> },
                 { path: 'inventaris', element: <InventarisPage /> },
-                { path: 'inventaris/:id', element: <InventarisPage /> },
-                { path: 'inventaris/tambah', element: <InventarisPage /> },
+                { path: 'inventaris/:id', element: <DetailInventaris /> },
+                { path: 'inventaris/tambah', element: <TambahInventaris /> },
                 { path: 'proposal/create', element: <CreateProposal /> },
                 { path: 'persuratan', element: <PersuratanPage /> },
                 { path: 'persuratan/:id', element: <PersuratanPage /> },
