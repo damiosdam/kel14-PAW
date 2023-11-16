@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from '../layouts/dashboard';
+import CreateProposal from '../components/ProposalPage/CreateProposal'
 
 export const Home = lazy(() => import('../pages/app'));
 export const AnggotaPage = lazy(() => import('../pages/anggota'));
@@ -35,6 +36,7 @@ export default function Router() {
                 { path: 'inventaris', element: <InventarisPage /> },
                 { path: 'inventaris/:id', element: <DetailInventaris /> },
                 { path: 'inventaris/tambah', element: <TambahInventaris /> },
+                { path: 'proposal/create', element: <CreateProposal /> },
                 { path: 'persuratan', element: <PersuratanPage /> },
                 { path: 'persuratan/:id', element: <PersuratanPage /> },
                 { path: 'proposal', element: <ProposalPage /> },
