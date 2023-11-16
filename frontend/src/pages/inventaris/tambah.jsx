@@ -1,10 +1,9 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Report } from 'notiflix/build/notiflix-report-aio';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Top from '../../components/top';
@@ -75,38 +74,26 @@ export default function AppPage() {
             Notify.warning('Semua form bertanda bintang harus diisi!');
             return;
         }
-        try {
-            setLoading(true);
-            const formDataToSend = new FormData();
-            formDataToSend.append('namaBarang', formData.namaBarang);
-            formDataToSend.append('kategori', formData.kategori);
-            formDataToSend.append('jumlah', formData.jumlah);
-            formDataToSend.append('unit', formData.unit);
-            formDataToSend.append('keadaan', formData.keadaan);
-            formDataToSend.append('foto', formData.foto);
-            // Kirim data ke backend
-            axios
-                .post('http://localhost:5000/api/v1/inventaris', formDataToSend)
-                .then((response) => {
-                    Report.success(
-                        'Sukses!',
-                        'Berhasil menambahkan barang: ' + formData.namaBarang,
-                        'Okay',
-                        () => {
-                            clearForm();
-                            setLoading(false);
-                        },
-                    );
-                })
-        } catch (error) {
-            Report.failure(
-                'Terjadi kesalahan',
-                error.message,
-                'Okay',
-            );
-        } finally {
-            // setLoading(false);
-        }
+        setLoading(true);
+        const formDataToSend = new FormData();
+        formDataToSend.append('namaBarang', formData.namaBarang);
+        formDataToSend.append('kategori', formData.kategori);
+        formDataToSend.append('jumlah', formData.jumlah);
+        formDataToSend.append('unit', formData.unit);
+        formDataToSend.append('keadaan', formData.keadaan);
+        formDataToSend.append('foto', formData.foto);
+        // Kirim data ke backend
+        axios
+            .post('http://localhost:5000/api/v1/inventaris', formDataToSend)
+            .then((response) => {
+                Notify.success('Berhasil menambahkan barang: ' + formData.namaBarang);
+                clearForm();
+                setLoading(false);
+            }).catch((error) => {
+                Notify.failure(`Terjadi kesalahan: ${error.message}`);
+                clearForm();
+                setLoading(false);
+            })
     };
     return (
         <>
@@ -115,6 +102,7 @@ export default function AppPage() {
             </Helmet>
             <Container>
                 <Top namaPage="Tambah Inventaris" back="/inventaris" />
+                {loading ? Loading.dots() : Loading.remove()}
                 <Box
                     display="flex"
                     flexDirection={{ xs: 'column', md: 'row' }}
@@ -199,12 +187,6 @@ export default function AppPage() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            {/* <input
-                                type="file"
-                                accept="image/*"
-                                name="foto"
-                                onChange={handleInputChange}
-                            /> */}
                             <Button
                                 component="label"
                                 variant="contained"
@@ -218,19 +200,18 @@ export default function AppPage() {
                                     onChange={handleInputChange}
                                 />
                             </Button>
+                            <Typography>{formData.foto?.name}</Typography>
                         </Grid>
                         <Grid item xs={12} container justifyContent="flex-end">
-                            {loading ? Loading.dots() : (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                                    onClick={handleSubmit}
-                                    disabled={loading}
-                                >
-                                    Simpan
-                                </Button>
-                            )}
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{ marginTop: '1rem', marginLeft: '1rem' }}
+                                onClick={handleSubmit}
+                                disabled={loading}
+                            >
+                                Simpan
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
