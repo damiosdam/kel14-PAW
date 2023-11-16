@@ -1,7 +1,8 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -23,9 +24,7 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function AppPage() {
     const { id } = useParams(); // Ambil ID dari parameter URL
-    const [itemData, setItemData] = useState({});
     const [editedData, setEditedData] = useState({});
-    const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -33,7 +32,6 @@ export default function AppPage() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/inventaris/${id}`);
-                setItemData(response?.data?.data);
                 setEditedData(response?.data?.data);
             } catch (error) {
                 Notify.failure(`Error fetching item details: ${error}`);
@@ -41,6 +39,7 @@ export default function AppPage() {
         };
 
         fetchData();
+        console.log(editedData);
     }, [id]);
 
     const handleInputChange = (event) => {
@@ -60,25 +59,42 @@ export default function AppPage() {
         }
     };
     const handleSaveChanges = () => {
+        if (checkForm() === false) {
+            Notify.warning('Semua form bertanda bintang harus diisi!');
+            return;
+        }
+        setLoading(true);
         // Panggil API untuk menyimpan perubahan
+        const formDataToSend = new FormData();
+        formDataToSend.append('namaBarang', editedData.namaBarang);
+        formDataToSend.append('kategori', editedData.kategori);
+        formDataToSend.append('jumlah', editedData.jumlah);
+        formDataToSend.append('unit', editedData.unit);
+        formDataToSend.append('keadaan', editedData.keadaan);
+        formDataToSend.append('foto', editedData.foto);
         axios
-            .put(`http://localhost:5000/api/v1/inventaris/${id}`, editedData)
+            .put(`http://localhost:5000/api/v1/inventaris/${id}`, formDataToSend)
             .then((response) => {
                 Notify.success('Perubahan disimpan');
-                setIsEditing(false);
+                setLoading(false);
             })
             .catch((error) => {
-                Notify.failure(`Error saat menyimpan perubahan : ${error}`);
+                const message = error.response.data.message;
+                Notify.failure(`Error saat menyimpan perubahan : ${message}`);
+                setLoading(false);
             });
-    };
-    const handleCancelEdit = () => {
-        // Kembalikan data yang diubah ke data awal
-        setEditedData(itemData);
-        setIsEditing(false);
     };
     const checkForm = () => {
         let isFullfilled = true;
-
+        if (editedData.foto === null ||
+            editedData.namaBarang === '' ||
+            editedData.kategori === '' ||
+            editedData.jumlah === '' ||
+            editedData.unit === '' ||
+            editedData.keadaan === ''
+        ) {
+            isFullfilled = false;
+        }
         return isFullfilled
     }
     return (
@@ -88,6 +104,7 @@ export default function AppPage() {
             </Helmet>
             <Container>
                 <Top namaPage="Detail Inventaris" back="/inventaris" />
+                {loading ? Loading.dots() : Loading.remove()}
                 <Box
                     display="flex"
                     flexDirection={{ xs: 'column', md: 'row' }}
@@ -100,15 +117,21 @@ export default function AppPage() {
                     bgcolor="background.paper"
                 >
                     <Grid container spacing={2}>
+                        <Grid item xs={12} container justifyContent="center" alignItems="center">
+                            <img
+                                src={editedData.foto instanceof File ? URL.createObjectURL(editedData.foto) : editedData.foto?.exportLink || 'placeholder-image-url'}
+                                alt="Foto Barang"
+                                style={{ width: 'auto', maxHeight: '350px' }}
+                            />
+                        </Grid>
                         <Grid item xs={12} md={6}>
                             <TextField
                                 required
                                 label="Nama Barang"
                                 fullWidth
                                 name="namaBarang"
-                                value={editedData.namaBarang}
+                                value={editedData.namaBarang || ''}
                                 onChange={handleInputChange}
-                                disabled={!isEditing}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -117,9 +140,8 @@ export default function AppPage() {
                                 label="Kategori"
                                 fullWidth
                                 name="kategori"
-                                value={editedData.kategori}
+                                value={editedData.kategori || ''}
                                 onChange={handleInputChange}
-                                disabled={!isEditing}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -129,9 +151,8 @@ export default function AppPage() {
                                 type="number"
                                 fullWidth
                                 name="jumlah"
-                                value={editedData.jumlah}
+                                value={editedData.jumlah || ''}
                                 onChange={handleInputChange}
-                                disabled={!isEditing}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -143,9 +164,8 @@ export default function AppPage() {
                                     id="unit"
                                     label="Unit"
                                     name="unit"
-                                    value={editedData.unit}
+                                    value={editedData.unit || ''}
                                     onChange={handleInputChange}
-                                    disabled={!isEditing}
                                 >
                                     {units.map((unit) => (
                                         <MenuItem key={unit.value} value={unit.value}>
@@ -164,9 +184,8 @@ export default function AppPage() {
                                     id="keadaan"
                                     label="Keadaan"
                                     name="keadaan"
-                                    value={editedData.keadaan}
+                                    value={editedData.keadaan || ''}
                                     onChange={handleInputChange}
-                                    disabled={!isEditing}
                                 >
                                     {keadaan.map((unit) => (
                                         <MenuItem key={unit.value} value={unit.value}>
@@ -177,12 +196,6 @@ export default function AppPage() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            {/* <input
-                                type="file"
-                                accept="image/*"
-                                name="foto"
-                                onChange={handleInputChange}
-                            /> */}
                             <Button
                                 component="label"
                                 variant="contained"
@@ -196,35 +209,17 @@ export default function AppPage() {
                                     onChange={handleInputChange}
                                 />
                             </Button>
+                            <Typography>{editedData.foto?.originalFileName ? editedData.foto?.originalFileName : editedData.foto?.name}</Typography>
                         </Grid>
                         <Grid item xs={12} container justifyContent="flex-end">
-                            {isEditing ? (
-                                <>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleSaveChanges}
-                                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                                    >
-                                        Simpan Perubahan
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={handleCancelEdit}
-                                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                                    >
-                                        Batal
-                                    </Button>
-                                </>
-                            ) : (
-                                <Button
-                                    variant="contained"
-                                    style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                                    onClick={() => setIsEditing(true)}>
-                                    Edit
-                                </Button>
-                            )}
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleSaveChanges}
+                                style={{ marginTop: '1rem', marginLeft: '1rem' }}
+                            >
+                                Simpan Perubahan
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
