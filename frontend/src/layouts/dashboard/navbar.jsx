@@ -67,6 +67,7 @@ export default function Navbar({ openNav, onCloseNav }) {
     return (
         <Box
             sx={{
+                bgcolor: 'linear-gradient(180deg, #3374A3 -4.07%, #546FCF 93.9%)',
                 flexShrink: { lg: 0 },
                 width: { lg: NAV.WIDTH }
             }}
