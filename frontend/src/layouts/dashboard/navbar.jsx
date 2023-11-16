@@ -16,11 +16,11 @@ import { useResponsive } from '../../hooks/use-responsive';
 
 import Scrollbar from '../../components/scrollbar';
 
+import { blue } from '@mui/material/colors';
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-
 // ----------------------------------------------------------------------
-
+const primary = blue[700];
 export default function Navbar({ openNav, onCloseNav }) {
     const pathname = usePathname();
 
@@ -69,7 +69,7 @@ export default function Navbar({ openNav, onCloseNav }) {
             sx={{
                 bgcolor: 'linear-gradient(180deg, #3374A3 -4.07%, #546FCF 93.9%)',
                 flexShrink: { lg: 0 },
-                width: { lg: NAV.WIDTH },
+                width: { lg: NAV.WIDTH }
             }}
         >
             {upLg ? (
@@ -110,7 +110,7 @@ Navbar.propTypes = {
 function NavItem({ item }) {
     const pathname = usePathname();
 
-    const active = item.path === pathname;
+    const active = pathname.startsWith(item.path);
 
     return (
         <ListItemButton
