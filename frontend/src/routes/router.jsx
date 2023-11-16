@@ -37,6 +37,7 @@ export default function Router() {
                 { path: 'proposal/id', element: <ProposalPage /> },
                 { path: 'lpj', element: <LPJPage /> },
                 { path: 'lpj/:id', element: <LPJPage /> },
+                
             ],
         },
         {
