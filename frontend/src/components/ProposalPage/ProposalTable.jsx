@@ -1,8 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTable } from 'react-table';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+} from '@mui/material';
 
 export default function DataTable({ columns, data }) {
+    const navigate = useNavigate();
     const {
         getTableProps,
         getTableBodyProps,
@@ -11,17 +21,21 @@ export default function DataTable({ columns, data }) {
         prepareRow,
     } = useTable({ columns, data });
 
+    const handleRowClick = (_id) => {
+        navigate(`/proposal/${_id}`);
+    };
+
     return (
         <div>
-            <TableContainer 
-                component={Paper} 
-                sx={{ 
-                    width: '1400px', 
-                    height: '685px', 
-                    flexShrink: 0, 
-                    borderRadius: '15px',                                               
+            <TableContainer
+                component={Paper}
+                sx={{
+                    width: '1400px',
+                    height: '685px',
+                    flexShrink: 0,
+                    borderRadius: '15px',
                     background: '#F8F8F8',
-                    marginLeft: '50px' 
+                    marginLeft: '50px',
                 }}
             >
                 <Table {...getTableProps()} className="baseTable w-96 h-96 bg-stone-50 rounded-2xl">
@@ -38,7 +52,17 @@ export default function DataTable({ columns, data }) {
                         {rows.map(row => {
                             prepareRow(row);
                             return (
-                                <TableRow {...row.getRowProps()}>
+                                <TableRow
+                                    {...row.getRowProps()}
+                                    key={row.id}
+                                    onClick={() => handleRowClick(row.original._id)}
+                                    style={{ cursor: 'pointer', transition: 'background-color 0.3s' }}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: '#EAEAEA',
+                                        },
+                                    }}
+                                >
                                     {row.cells.map(cell => (
                                         <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
                                     ))}
