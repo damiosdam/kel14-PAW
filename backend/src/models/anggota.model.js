@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Enum untuk posisiAnggota
-const posisiAnggotaEnum = ['Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'];
+//const posisiAnggotaEnum = ['Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'];
 
 // Enum untuk statusAnggota
-const statusAnggotaEnum = ['Aktif', 'Tidak Aktif'];
+//const statusAnggotaEnum = ['Aktif', 'Tidak Aktif'];
 
 const AnggotaSchema = new Schema({
     nomorAnggota : {
@@ -18,22 +18,22 @@ const AnggotaSchema = new Schema({
         type: String,
     },
     prodiAnggota : {
-        type: String,
+        type: String
     },
     nimAnggota : {
-        type: String,
+        type: String
     },
     emailAnggota : {
-        type: String,
+        type: String
     },
     posisiAnggota : {
-        type: posisiAnggotaEnum
+        type: String
     },
     fotoAnggota : {
         type: Object
     },
     statusAnggota : {
-        type: statusAnggotaEnum
+        type: String
     },
     nomorHpAnggota : {
         type: String

@@ -116,6 +116,9 @@ exports.update = async (req, res, next) => {
             return next(error);
         } else {
             const {fotoAnggota} = await uploadFileToGdrive(req.files);
+            if(nomorAnggota != undefined) {
+                anggota.nomorAnggota = nomorAnggota;
+            }
             if(namaAnggota != undefined) {
                 anggota.namaAnggota = namaAnggota;
             }
