@@ -3,6 +3,7 @@ import { Navigate, Outlet, useRoutes } from "react-router-dom";
 
 import DashboardLayout from "../layouts/dashboard";
 import CreateProposal from "../pages/ProposalPage/CreateProposal";
+import ProposalView from "../pages/ProposalPage/ProposalView";
 
 export const Home = lazy(() => import("../pages/app"));
 export const AnggotaPage = lazy(() => import("../pages/anggota"));
@@ -45,7 +46,7 @@ export default function Router() {
         { path: "persuratan", element: <PersuratanPage /> },
         { path: "persuratan/:id", element: <PersuratanPage /> },
         { path: "proposal", element: <ProposalPage /> },
-        { path: "proposal/id", element: <ProposalPage /> },
+        { path: "proposal/:id", element: <ProposalView /> },
         { path: "proposal/create", element: <CreateProposal /> },
         { path: "lpj", element: <LPJPage /> },
         { path: "lpj/:id", element: <DetailLPJPage /> },
