@@ -20,11 +20,3 @@
 ## Link Penting
 1. [Materi Presentasi](https://docs.google.com/presentation/d/158r2mtnLMvyeWrQhYboaQXjowZlaHC7ZF4SXPaqmgEs/edit?usp=sharing)
 2. [Video Presentasi Backend](https://drive.google.com/file/d/1ELj7Nc8wTN4cEm0nA99hqUS34H53S8VV/view?usp=sharing)
-
-
-### Informasi
-Beberapa code memang sedikit mirip dengan kodingan backend web Technocorner 2023, karena memang Maulana Anjari sebagai backend developer di Technocorner 2023. Dengan pengalaman ini mohon dapat menjadi tambahan nilai 🙏, terima kasih.
-
-[https://github.com/WebTechnocorner-2023/BE_TC23 (Private)](https://github.com/WebTechnocorner-2023/BE_TC23)
-
-![Screenshot](https://drive.google.com/uc?export=view&id=1B8z93m54dl9ncxgimLVYa9k-TudCnXtK)
