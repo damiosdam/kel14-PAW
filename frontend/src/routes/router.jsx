@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 
 import DashboardLayout from "../layouts/dashboard";
-import CreateProposal from "../components/ProposalPage/CreateProposal";
+import CreateProposal from "../pages/ProposalPage/CreateProposal";
 
 export const Home = lazy(() => import("../pages/app"));
 export const AnggotaPage = lazy(() => import("../pages/anggota"));
@@ -14,7 +14,7 @@ export const DetailInventaris = lazy(() =>
   import("../pages/inventaris/detail")
 );
 export const PersuratanPage = lazy(() => import("../pages/persuratan"));
-export const ProposalPage = lazy(() => import("../pages/proposal"));
+export const ProposalPage = lazy(() => import("../pages/ProposalPage/proposal"));
 export const LPJPage = lazy(() => import("../pages/lpj/index"));
 export const TambahLPJPage = lazy(() => import("../pages/lpj/tambah"));
 export const DetailLPJPage = lazy(() => import("../pages/lpj/detail"));
@@ -42,11 +42,11 @@ export default function Router() {
         { path: "inventaris", element: <InventarisPage /> },
         { path: "inventaris/:id", element: <DetailInventaris /> },
         { path: "inventaris/tambah", element: <TambahInventaris /> },
-        { path: "proposal/create", element: <CreateProposal /> },
         { path: "persuratan", element: <PersuratanPage /> },
         { path: "persuratan/:id", element: <PersuratanPage /> },
         { path: "proposal", element: <ProposalPage /> },
         { path: "proposal/id", element: <ProposalPage /> },
+        { path: "proposal/create", element: <CreateProposal /> },
         { path: "lpj", element: <LPJPage /> },
         { path: "lpj/:id", element: <DetailLPJPage /> },
         { path: "lpj/tambah", element: <TambahLPJPage /> },
