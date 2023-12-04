@@ -28,7 +28,7 @@ exports.create = async (req, res, next) => {
             prodiAnggota, 
             nimAnggota, 
             emailAnggota, 
-            posisiAnggota, 
+            posisiAnggota,
             statusAnggota,
             nomorHpAnggota,
             ttlAnggota,
@@ -38,23 +38,23 @@ exports.create = async (req, res, next) => {
 
         const cekAnggota = await Anggota.findOne({namaAnggota : namaAnggota});
         if(cekAnggota) {
-            const error = new ErrorHandler(400, "Nomor Anggota Sudah Terdaftar");
+            const error = new ErrorHandler(400, "Anggota Sudah Terdaftar");
             return next(error);
         }
 
-        let fotoAnggota = {};
-        if(req.files && req.files.fotoAnggota) {
-            // fotoAnggota = await uploadFileToGdrive(req.files);
+        let foto = {};
+        if(req.files && req.files.foto) {
+             foto = await uploadFileToGdrive(req.files);
         }
 
-        const anggota = await Anggota.create({ 
+        const anggota = new Anggota({ 
             namaAnggota : namaAnggota, 
             fakultasAnggota : fakultasAnggota, 
             prodiAnggota : prodiAnggota, 
             nimAnggota : nimAnggota, 
             emailAnggota : emailAnggota, 
             posisiAnggota : posisiAnggota, 
-            fotoAnggota : fotoAnggota.fotoAnggota, 
+            foto : foto.foto, 
             statusAnggota : statusAnggota,
             nomorHpAnggota : nomorHpAnggota,
             ttlAnggota : ttlAnggota,
