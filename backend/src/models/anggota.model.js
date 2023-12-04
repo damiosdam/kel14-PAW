@@ -26,7 +26,7 @@ const AnggotaSchema = new Schema({
     },
     posisiAnggota : {
         type: String,
-        enum : ['Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'] ,
+        enum : ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'] ,
         required: [true, 'Tolong isi Posisi Anggota!'],
     },
     foto : {
