@@ -1,10 +1,11 @@
-const AnggotaModel = require('../models/anggota.model');
+const Anggota = require('../models/anggota.model');
 const ErrorHandler = require('../utils/error-handler');
 const { uploadFileToGdrive, deleteFile } = require("../services/upload-file.service");
 
+// function untuk menampilkan semua data anggota
 exports.index = async (req, res, next) => {
     try{
-        const anggota = await AnggotaModel.find();
+        const anggota = await Anggota.find();
         if(!anggota) {
             const error = new ErrorHandler(400, "Data Anggota Tidak Ditemukan");
             return next(error);
@@ -18,10 +19,10 @@ exports.index = async (req, res, next) => {
     }
 }
 
+// function untuk menambahkan data anggota
 exports.create = async (req, res, next) => {
     try{
-        const {
-            nomorAnggota, 
+        const { 
             namaAnggota, 
             fakultasAnggota, 
             prodiAnggota, 
@@ -35,7 +36,7 @@ exports.create = async (req, res, next) => {
             periodeAnggota, 
         } = req.body;
 
-        const cekAnggota = await AnggotaModel.findOne({nomorAnggota : nomorAnggota});
+        const cekAnggota = await Anggota.findOne({namaAnggota : namaAnggota});
         if(cekAnggota) {
             const error = new ErrorHandler(400, "Nomor Anggota Sudah Terdaftar");
             return next(error);
@@ -43,11 +44,10 @@ exports.create = async (req, res, next) => {
 
         let fotoAnggota = {};
         if(req.files && req.files.fotoAnggota) {
-            fotoAnggota = await uploadFileToGdrive(req.files);
+            // fotoAnggota = await uploadFileToGdrive(req.files);
         }
 
-        const anggota = new AnggotaModel({
-            nomorAnggota : nomorAnggota, 
+        const anggota = await Anggota.create({ 
             namaAnggota : namaAnggota, 
             fakultasAnggota : fakultasAnggota, 
             prodiAnggota : prodiAnggota, 
@@ -74,10 +74,11 @@ exports.create = async (req, res, next) => {
     }
 };
 
+// function untuk menampilkan data anggota berdasarkan id
 exports.show = async (req, res, next) => {
     const idAnggota = req.params.id;
     try {
-        const anggota = await AnggotaModel.findOne({_id : idAnggota});
+        const anggota = await Anggota.findOne({_id : idAnggota});
         if(!anggota) {
             const error = new ErrorHandler(400, "Data Anggota Tidak Ditemukan");
             return next(error);
@@ -92,73 +93,19 @@ exports.show = async (req, res, next) => {
     }
 };
 
+// function untuk mengupdate data anggota berdasarkan id
 exports.update = async (req, res, next) => {
     const idAnggota = req.params.id;
     try{
-        const {
-            nomorAnggota, 
-            namaAnggota, 
-            fakultasAnggota, 
-            prodiAnggota, 
-            nimAnggota, 
-            emailAnggota, 
-            posisiAnggota, 
-            statusAnggota,
-            nomorHpAnggota,
-            ttlAnggota,
-            asalAnggota,
-            periodeAnggota, 
-        } = req.body;
-        const anggota = await AnggotaModel.findOne({_id : idAnggota});
+        const anggota = await Anggota.findByIdAndUpdate(idAnggota, req.body, {new : true});
         
         if(!anggota) {
             const error = new ErrorHandler(400, "Data Anggota Tidak Ditemukan");
             return next(error);
         } else {
-            const {fotoAnggota} = await uploadFileToGdrive(req.files);
-            if(nomorAnggota != undefined) {
-                anggota.nomorAnggota = nomorAnggota;
-            }
-            if(namaAnggota != undefined) {
-                anggota.namaAnggota = namaAnggota;
-            }
-            if(fakultasAnggota != undefined) {
-                anggota.fakultasAnggota = fakultasAnggota;
-            }
-            if(prodiAnggota != undefined) {
-                anggota.prodiAnggota = prodiAnggota;
-            }
-            if(nimAnggota != undefined) {
-                anggota.nimAnggota = nimAnggota;
-            }
-            if(emailAnggota != undefined) {
-                anggota.emailAnggota = emailAnggota;
-            }
-            if(posisiAnggota != undefined) {
-                anggota.posisiAnggota = posisiAnggota;
-            }
-            if(statusAnggota != undefined) {
-                anggota.statusAnggota = statusAnggota;
-            }
-            if(nomorHpAnggota != undefined) {
-                anggota.nomorHpAnggota = nomorHpAnggota;
-            }
-            if(ttlAnggota != undefined) {
-                anggota.ttlAnggota = ttlAnggota;
-            }
-            if(asalAnggota != undefined) {
-                anggota.asalAnggota = asalAnggota;
-            }
-            if(periodeAnggota != undefined) {
-                anggota.periodeAnggota = periodeAnggota;
-            }
-            if(fotoAnggota != undefined) {
-                await deleteFile(anggota.fotoAnggota.fileId);
-                anggota.fotoAnggota = fotoAnggota;
-            }
-            anggota.save();
             res.status(200).json({
                 error: false,
+                data: anggota,
                 message: "Data Anggota Berhasil Diupdate",
             })
         }
@@ -167,10 +114,11 @@ exports.update = async (req, res, next) => {
     }
 };
 
+// function untuk menghapus data anggota berdasarkan id
 exports.delete = async (req, res, next) => {
     const idAnggota = req.params.id;
     try {
-        const anggota = await AnggotaModel.findByIdAndRemove(idAnggota);
+        const anggota = await Anggota.findByIdAndRemove(idAnggota);
         if(!anggota) {
             const error = new ErrorHandler(400, "Data Anggota Tidak Ditemukan");
             return next(error);

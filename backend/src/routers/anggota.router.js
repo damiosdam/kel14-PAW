@@ -4,7 +4,7 @@ const router = express.Router();
 const AnggotaController = require('../controllers/anggota.controller');
 const { uploadFile } = require('../middlewares/uploadFile');
 
-const uploadAnggota = uploadFile.fields([{ name: 'fotoAnggota', maxCount: 1 }]);
+const uploadAnggota = uploadFile.fields([{ name: 'dataAnggota', maxCount: 1 }]);
 
 router.get('/', AnggotaController.index);
 router.post('/', uploadAnggota, AnggotaController.create);
