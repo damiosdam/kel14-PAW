@@ -29,9 +29,9 @@ const AnggotaSchema = new Schema({
         enum : ['Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'] ,
         required: [true, 'Tolong isi Posisi Anggota!'],
     },
-    fotoAnggota : {
+    foto : {
         type: Object,
-        required: [false, 'Tolong isi Foto Anggota!']
+        required: [true, 'Tolong isi Foto Anggota!']
     },
     statusAnggota : {
         type: String,
