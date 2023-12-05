@@ -3,12 +3,8 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
+  TextField
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -18,7 +14,7 @@ import { Report } from "notiflix/build/notiflix-report-aio";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Top from "../../components/top";
-import { keadaan, units } from "./config-lpj";
+// import { keadaan, units } from "./config-lpj";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",

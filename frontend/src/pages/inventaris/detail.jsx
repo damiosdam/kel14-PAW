@@ -39,7 +39,6 @@ export default function AppPage() {
         };
 
         fetchData();
-        console.log(editedData);
     }, [id]);
 
     const handleInputChange = (event) => {
