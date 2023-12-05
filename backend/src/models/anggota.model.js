@@ -1,51 +1,59 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Enum untuk posisiAnggota
-const posisiAnggotaEnum = ['Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'];
-
-// Enum untuk statusAnggota
-const statusAnggotaEnum = ['Aktif', 'Tidak Aktif'];
-
 const AnggotaSchema = new Schema({
-    nomorAnggota : {
-        type: Number,
-    },
     namaAnggota : {
         type: String,
+        required: [true, 'Tolong isi Nama Anggota!'] 
     },    
     fakultasAnggota : {
         type: String,
+        required: [true, 'Tolong isi Fakultas Anggota!']
     },
     prodiAnggota : {
         type: String,
+        required: [true, 'Tolong isi Prodi Anggota!']
     },
     nimAnggota : {
         type: String,
+        required: [true, 'Tolong isi NIM Anggota!'],
+        unique: true,
     },
     emailAnggota : {
         type: String,
+        required: [true, 'Tolong isi Email Anggota!'],
+        unique: true,
     },
     posisiAnggota : {
-        type: posisiAnggotaEnum
+        type: String,
+        enum : ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Bendahara', 'Koordinator', 'Sub-Koordinator', 'Anggota'] ,
+        required: [true, 'Tolong isi Posisi Anggota!'],
     },
-    fotoAnggota : {
-        type: Object
+    foto : {
+        type: Object,
+        required: [true, 'Tolong isi Foto Anggota!']
     },
     statusAnggota : {
-        type: statusAnggotaEnum
+        type: String,
+        enum : ['Aktif', 'Tidak Aktif'],
+        required: [true, 'Tolong isi Status Anggota!'],
     },
     nomorHpAnggota : {
-        type: String
+        type: String,
+        required: [true, 'Tolong isi Nomor HP Anggota!'],
+        unique: true,
     },
     ttlAnggota : {
-        type: String
+        type: String,
+        required: [true, 'Tolong isi TTL Anggota!']
     },
     asalAnggota : {
-        type: String
+        type: String,
+        required: [true, 'Tolong isi Asal Anggota!']
     },
     periodeAnggota : {
-        type: String
+        type: String,
+        required: [true, 'Tolong isi Periode Anggota!']
     }
 },
     {
