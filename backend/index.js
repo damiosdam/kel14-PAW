@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const helmet = require("helmet");
 const compression = require("compression");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 // ? START THE APP
 const app = express();
@@ -27,6 +28,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 
 // ? Routes
 const Inventaris = require("./src/routers/inventaris.router.js");
@@ -34,11 +36,14 @@ const Proposal = require("./src/routers/proposal.router.js");
 const Persuratan = require("./src/routers/persuratan.router.js");
 const Anggota = require("./src/routers/anggota.router.js");
 const LPJ = require("./src/routers/pertanggungjawab.router.js");
+const AuthRouter = require("./src/routers/auth.router.js");
+
 app.use("/api/v1/inventaris", Inventaris);
 app.use("/api/v1/proposal", Proposal);
 app.use("/api/v1/persuratan", Persuratan);
 app.use("/api/v1/anggota", Anggota);
 app.use("/api/v1/lpj", LPJ);
+app.use("/api/v1/auth", AuthRouter);
 // ? End Routes
 
 // ? Error handling\
