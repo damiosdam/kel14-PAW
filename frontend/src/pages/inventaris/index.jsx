@@ -47,7 +47,6 @@ export default function AppPage() {
 
     useEffect(() => {
         fetchData();
-        console.log("data", data);
     }, []);
 
     const fetchData = async () => {
