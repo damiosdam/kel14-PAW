@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import FileViewer from 'react-file-viewer';
 import axios from 'axios';
 
 export default function ProposalView() {
@@ -20,25 +19,49 @@ export default function ProposalView() {
     
         fetchProposal();
     }, [id]);
-
-    const deleteProposals = async () => {
+    
+    const deleteProposal = async () => {
         try {
             await axios.delete(`http://localhost:5000/api/v1/proposal/${id}`);
             navigate('/proposal');
         } catch (error) {
-            console.error('Error deleting proposals:', error);
+            console.error('Error deleting proposal:', error);
         }
     };
-
-    const fileTypes = {
-        pdf: 'pdf',
-        docx: 'docx',
-        png: 'png',
-        img: 'img',
-        jpg: 'jpg',
-        jpeg: 'jpeg',
+    
+    const editProposal = () => {
+        navigate(`/proposal/${id}/edit`);
     };
-
+    
+    const renderProposalFile = () => {
+        if (proposal && proposal.proposalFile) {
+            const fileExtension = proposal.proposalFile.fileExtension;
+            const isPDF = fileExtension === 'pdf';
+            const isDOCX = fileExtension === 'docx';
+    
+            if (isPDF || isDOCX) {
+                const googleDriveUrl = proposal.proposalFile.exportLink;
+                const downloadLink = proposal.proposalFile.downloadLink;
+    
+                return (
+                    <div>
+                        <iframe 
+                            title="Proposal Document"
+                            src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${googleDriveUrl}`} 
+                            style={{ width: '100%', height: '600px' }} 
+                        />
+                        <a href={downloadLink} target="_blank" rel="noopener noreferrer">
+                            <button>Download Proposal</button>
+                        </a>
+                    </div>
+                );
+            } else {
+                return <p>This document format is not supported for preview.</p>;
+            }
+        }
+        return null;
+    };
+    
     return (
         <div>
             {proposal && (
@@ -51,15 +74,20 @@ export default function ProposalView() {
                     <p>Biaya Yang Diajukan: {proposal.biayaYangDiajukan}</p>
                     <p>Narahubung: {proposal.narahubung}</p>
                     <p>Biaya Yang Digunakan: {proposal.biayaYangDigunakan}</p>
-                    {proposal.proposalFile && (
-                        <FileViewer
-                            fileType={fileTypes[proposal.proposalFile.extension]} 
-                            filePath={proposal.proposalFile.exportLink} 
-                            onError={(e) => console.log('Error:', e)} 
-                            style={{ width: '100%', height: '600px' }} 
-                        />
-                    )}
-                    <button onClick={deleteProposals}>Delete Proposal</button>
+                    {renderProposalFile()}
+                    <div style={{ display: 'flex', marginTop: '10px' }}>
+                        <button onClick={deleteProposal} style={{ marginRight: '10px' }}>
+                            Delete Proposal
+                        </button>
+                        <button onClick={editProposal} style={{ marginRight: '10px' }}>
+                            Edit Proposal
+                        </button>
+                        {proposal.proposalFile && (
+                            <a href={proposal.proposalFile.downloadLink} target="_blank" rel="noopener noreferrer">
+                                <button>Download Proposal</button>
+                            </a>
+                        )}
+                    </div>
                 </>
             )}
         </div>

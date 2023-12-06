@@ -230,4 +230,5 @@ const handleSubmit = async (e) => {
         </Box>
         );
     }
+    
 export default CreateProposal;
