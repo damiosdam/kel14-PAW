@@ -8,8 +8,8 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Top from '../../components/top';
+import authHeader from '../../services/auth-header';
 import { keadaan, units } from './config-inventaris';
-
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -22,7 +22,8 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-export default function AppPage() {
+export default function DetailInventaris() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const { id } = useParams(); // Ambil ID dari parameter URL
     const [editedData, setEditedData] = useState({});
     const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ export default function AppPage() {
         // Panggil API untuk mendapatkan detail item berdasarkan ID
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/inventaris/${id}`);
+                const response = await axios.get(`${URL}/api/v1/inventaris/${id}`, { headers: authHeader() });
                 setEditedData(response?.data?.data);
             } catch (error) {
                 Notify.failure(`Error fetching item details: ${error}`);
@@ -72,7 +73,7 @@ export default function AppPage() {
         formDataToSend.append('keadaan', editedData.keadaan);
         formDataToSend.append('foto', editedData.foto);
         axios
-            .put(`http://localhost:5000/api/v1/inventaris/${id}`, formDataToSend)
+            .put(`${URL}/api/v1/inventaris/${id}`, formDataToSend, { headers: authHeader() })
             .then((response) => {
                 Notify.success('Perubahan disimpan');
                 setLoading(false);

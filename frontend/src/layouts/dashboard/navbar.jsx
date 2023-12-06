@@ -21,7 +21,7 @@ import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 // ----------------------------------------------------------------------
 const primary = blue[700];
-export default function Navbar({ openNav, onCloseNav }) {
+export default function Navbar({ openNav, onCloseNav, setAuth }) {
     const pathname = usePathname();
 
     const upLg = useResponsive('up', 'lg');
@@ -37,7 +37,7 @@ export default function Navbar({ openNav, onCloseNav }) {
     const renderMenu = (
         <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
             {navConfig.map((item) => (
-                <NavItem key={item.title} item={item} />
+                <NavItem key={item.title} item={item} setAuth={setAuth} />
             ))}
         </Stack>
     );
@@ -107,7 +107,7 @@ Navbar.propTypes = {
 
 // ----------------------------------------------------------------------
 
-function NavItem({ item }) {
+function NavItem({ item, setAuth }) {
     const pathname = usePathname();
 
     const active = pathname.startsWith(item.path);
@@ -115,6 +115,10 @@ function NavItem({ item }) {
     return (
         <ListItemButton
             component={RouterLink}
+            onClick={item.title === 'logout' ? (() => {
+                setAuth(false);
+                localStorage.removeItem("token");
+            }) : null}
             href={item.path}
             sx={{
                 minHeight: 44,

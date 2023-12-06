@@ -14,6 +14,7 @@ import { Report } from "notiflix/build/notiflix-report-aio";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Top from "../../components/top";
+import authHeader from '../../services/auth-header';
 // import { keadaan, units } from "./config-lpj";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -27,6 +28,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 export default function AppPage() {
+  const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     namaKegiatan: "",
@@ -105,7 +107,7 @@ export default function AppPage() {
       formDataToSend.append("fileLPJ", formData.fileLPJ);
       // Kirim data ke backend
       axios
-        .post("http://localhost:5000/api/v1/lpj", formDataToSend)
+        .post(`${URL}/api/v1/lpj`, formDataToSend, { headers: authHeader() })
         .then((response) => {
           Report.success(
             "Sukses!",

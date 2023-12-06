@@ -19,9 +19,6 @@ const userScheama = new mongoose.Schema(
         phone: {
             type: String,
         },
-        status: {
-            type: String,
-        },
         hashed_password: {
             type: String,
             // required: true

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import FileViewer from 'react-file-viewer';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import FileViewer from 'react-file-viewer';
+import { useNavigate, useParams } from 'react-router-dom';
+import authHeader from '../../services/auth-header';
 
 export default function ProposalView() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const { id } = useParams();
     const navigate = useNavigate();
     const [proposal, setProposal] = useState(null);
@@ -11,19 +13,19 @@ export default function ProposalView() {
     useEffect(() => {
         const fetchProposal = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/proposal/${id}`);
-                setProposal(response.data.data); 
+                const response = await axios.get(`${URL}/api/v1/proposal/${id}`, { headers: authHeader() });
+                setProposal(response.data.data);
             } catch (error) {
                 console.error('Error fetching proposal:', error);
             }
         };
-    
+
         fetchProposal();
     }, [id]);
 
     const deleteProposals = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/v1/proposal/${id}`);
+            await axios.delete(`${URL}/api/v1/proposal/${id}`, { headers: authHeader() });
             navigate('/proposal');
         } catch (error) {
             console.error('Error deleting proposals:', error);
@@ -53,10 +55,10 @@ export default function ProposalView() {
                     <p>Biaya Yang Digunakan: {proposal.biayaYangDigunakan}</p>
                     {proposal.proposalFile && (
                         <FileViewer
-                            fileType={fileTypes[proposal.proposalFile.extension]} 
-                            filePath={proposal.proposalFile.exportLink} 
-                            onError={(e) => console.log('Error:', e)} 
-                            style={{ width: '100%', height: '600px' }} 
+                            fileType={fileTypes[proposal.proposalFile.extension]}
+                            filePath={proposal.proposalFile.exportLink}
+                            onError={(e) => console.log('Error:', e)}
+                            style={{ width: '100%', height: '600px' }}
                         />
                     )}
                     <button onClick={deleteProposals}>Delete Proposal</button>

@@ -15,22 +15,27 @@ module.exports = {
         };
         const token = getToken(req);
         try {
+            if (!token) {
+                return res.status(400).send({
+                    error: "Not authenticated",
+                });
+            }
             const credential = jwt.verify(token, process.env.JWT_SECRET || "secret");
             if (!credential) {
                 return res.status(400).send({
-                    error: "Invalid token",
+                    error: "Authenticated invalid",
                 });
             }
             User.findById({ _id: credential._id }).select('_id')
-                .exec((err, user) => {
-                    if (err || !user) {
-                        return res.status(400).send({
-                            error: "User not found",
-                        });
-                    }
-                    req.user = user;
+                .then(response => {
+                    req.user = response._id;
                     return next();
-                });
+                })
+                .catch(error => {
+                    return res.status(400).send({
+                        error: "User not found",
+                    });
+                })
         } catch (error) {
             return res.send(error);
         }

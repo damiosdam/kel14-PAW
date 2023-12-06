@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import authHeader from '../../services/auth-header';
 import DataTable from './ProposalTable';
-
 export default function ProposalPage() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -14,7 +15,7 @@ export default function ProposalPage() {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get('http://localhost:5000/api/v1/proposal');
+            const result = await axios.get(`${URL}/api/v1/proposal`, { headers: authHeader() });
             setData(result.data.data);
         } catch (error) {
             console.error("Error fetching data: ", error);

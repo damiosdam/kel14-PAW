@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
-
+  const navigate = useNavigate();
 
   // OR using local (public folder)
   // -------------------------------------------------------
@@ -15,18 +15,15 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
     //   component="img"
     //   src="frontend\public\ukmmanage.svg" sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}
     // />
-    <Button variant="text" size="large" sx={{ mt: 3, mb: 3 }}>UKM Manage</Button>
+    <Button variant="text" size="large" sx={{ mt: 3, mb: 3 }} onClick={() => navigate("/")}>UKM Manage</Button>
   );
-
 
   if (disabledLink) {
     return logo;
   }
 
   return (
-    <Link href="/" sx={{ display: 'contents' }}>
-      <Button variant="text" size="large" sx={{ mt: 3, mb: 3 }}>UKM Manage</Button>
-    </Link>
+    <Button variant="text" size="large" sx={{ mt: 3, mb: 3 }} onClick={() => navigate("/")}>UKM Manage</Button>
   );
 });
 

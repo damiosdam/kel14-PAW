@@ -3,12 +3,8 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
+  TextField
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -17,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import Top from "../../components/top";
+import authHeader from '../../services/auth-header';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -36,14 +33,13 @@ export default function AppPage() {
   const [editedData, setEditedData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
 
   useEffect(() => {
     // Panggil API untuk mendapatkan detail item berdasarkan ID
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/lpj/${id}`
-        );
+        const response = await axios.get(`${URL}/api/v1/lpj/${id}`, { headers: authHeader() });
         setItemData(response?.data?.data);
         setEditedData(response?.data?.data);
       } catch (error) {
@@ -73,7 +69,7 @@ export default function AppPage() {
   const handleSaveChanges = () => {
     // Panggil API untuk menyimpan perubahan
     axios
-      .put(`http://localhost:5000/api/v1/lpj/${id}`, editedData)
+      .put(`${URL}/api/v1/lpj/${id}`, editedData, { headers: authHeader() })
       .then((response) => {
         Notify.success("Perubahan disimpan");
         setIsEditing(false);
