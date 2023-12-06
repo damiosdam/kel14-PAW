@@ -25,8 +25,10 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import Top from '../../components/top';
+import authHeader from '../../services/auth-header';
 
-export default function AppPage() {
+export default function Inventaris() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const ThumbnailImage = styled('img')({
@@ -51,7 +53,7 @@ export default function AppPage() {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get('http://localhost:5000/api/v1/inventaris');
+            const result = await axios.get(`${URL}/api/v1/inventaris`, { headers: authHeader() });
             setData(result?.data?.data);
         } catch (error) {
             Notify.failure("Error fetching data: ", error);
@@ -73,7 +75,7 @@ export default function AppPage() {
                 setData((prevData) => prevData.filter(item => item._id !== itemId));
                 // Panggil API untuk menghapus item dengan ID tertentu
                 axios
-                    .delete(`http://localhost:5000/api/v1/inventaris/${itemId}`)
+                    .delete(`${URL}/api/v1/inventaris/${itemId}`, { headers: authHeader() })
                     .then((response) => {
                         Notify.success('Item berhasil dihapus');
                         // Panggil fungsi untuk memperbarui data setelah penghapusan

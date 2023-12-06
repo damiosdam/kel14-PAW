@@ -9,7 +9,7 @@ import Navbar from './navbar';
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children, setAuth }) {
     const [openNav, setOpenNav] = useState(false);
 
     return (
@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
                     flexDirection: { xs: 'column', lg: 'row' },
                 }}
             >
-                <Navbar openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+                <Navbar openNav={openNav} onCloseNav={() => setOpenNav(false)} setAuth={setAuth} />
                 <Main>{children}</Main>
             </Box>
         </>

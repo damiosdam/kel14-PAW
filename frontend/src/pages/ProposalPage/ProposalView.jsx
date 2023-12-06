@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import authHeader from '../../services/auth-header';
 
 export default function ProposalView() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const { id } = useParams();
     const navigate = useNavigate();
     const [proposal, setProposal] = useState(null);
@@ -10,45 +12,45 @@ export default function ProposalView() {
     useEffect(() => {
         const fetchProposal = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/proposal/${id}`);
-                setProposal(response.data.data); 
+                const response = await axios.get(`${URL}/api/v1/proposal/${id}`, { headers: authHeader() });
+                setProposal(response.data.data);
             } catch (error) {
                 console.error('Error fetching proposal:', error);
             }
         };
-    
+
         fetchProposal();
     }, [id]);
-    
+
     const deleteProposal = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/v1/proposal/${id}`);
+            await axios.delete(`${URL}/api/v1/proposal/${id}`, { headers: authHeader() });
             navigate('/proposal');
         } catch (error) {
             console.error('Error deleting proposal:', error);
         }
     };
-    
+
     const editProposal = () => {
         navigate(`/proposal/${id}/edit`);
     };
-    
+
     const renderProposalFile = () => {
         if (proposal && proposal.proposalFile) {
             const fileExtension = proposal.proposalFile.fileExtension;
             const isPDF = fileExtension === 'pdf';
             const isDOCX = fileExtension === 'docx';
-    
+
             if (isPDF || isDOCX) {
                 const googleDriveUrl = proposal.proposalFile.exportLink;
                 const downloadLink = proposal.proposalFile.downloadLink;
-    
+
                 return (
                     <div>
-                        <iframe 
+                        <iframe
                             title="Proposal Document"
-                            src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${googleDriveUrl}`} 
-                            style={{ width: '100%', height: '600px' }} 
+                            src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${googleDriveUrl}`}
+                            style={{ width: '100%', height: '600px' }}
                         />
                         <a href={downloadLink} target="_blank" rel="noopener noreferrer">
                             <button>Download Proposal</button>
@@ -61,7 +63,7 @@ export default function ProposalView() {
         }
         return null;
     };
-    
+
     return (
         <div>
             {proposal && (
@@ -89,7 +91,8 @@ export default function ProposalView() {
                         )}
                     </div>
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }

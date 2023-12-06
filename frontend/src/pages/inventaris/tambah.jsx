@@ -7,6 +7,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Top from '../../components/top';
+import authHeader from '../../services/auth-header';
 import { keadaan, units } from './config-inventaris';
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -20,6 +21,7 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 export default function AppPage() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         namaBarang: '',
@@ -84,7 +86,7 @@ export default function AppPage() {
         formDataToSend.append('foto', formData.foto);
         // Kirim data ke backend
         axios
-            .post('http://localhost:5000/api/v1/inventaris', formDataToSend)
+            .post(`${URL}/api/v1/inventaris`, formDataToSend, { headers: authHeader() })
             .then((response) => {
                 Notify.success('Berhasil menambahkan barang: ' + formData.namaBarang);
                 clearForm();

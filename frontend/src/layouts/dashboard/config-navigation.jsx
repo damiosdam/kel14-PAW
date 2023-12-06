@@ -39,7 +39,7 @@ const navConfig = [
   },
   {
     title: 'logout',
-    path: '/logout',
+    path: '/login',
     icon: <LogoutIcon />,
   }
 ];

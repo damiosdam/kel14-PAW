@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { Navigate, Outlet, useLocation, useRoutes } from "react-router-dom";
 
 import DashboardLayout from "../layouts/dashboard";
 import CreateProposal from "../pages/ProposalPage/CreateProposal";
@@ -19,23 +19,35 @@ export const ProposalPage = lazy(() => import("../pages/ProposalPage/proposal"))
 export const LPJPage = lazy(() => import("../pages/lpj/index"));
 export const TambahLPJPage = lazy(() => import("../pages/lpj/tambah"));
 export const DetailLPJPage = lazy(() => import("../pages/lpj/detail"));
-export const LoginPage = lazy(() => import("../pages/login"));
+export const LoginPage = lazy(() => import("../pages/auth/login"));
+export const SignupPage = lazy(() => import("../pages/auth/signup"));
+export const ActivatePage = lazy(() => import("../pages/auth/activate"));
+export const VerifiedPage = lazy(() => import("../pages/auth/verified"));
 export const Page404 = lazy(() => import("../pages/page-not-found"));
 
 export default function Router() {
+  const [auth, setAuth] = useState(false);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('token'))) {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
+  }, []);
+  const location = useLocation();
   const routes = useRoutes([
     {
       path: "/",
-      element: <Navigate to="/dashboard" replace />,
+      element: auth ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" state={{ from: location }} replace />,
     },
     {
-      element: (
-        <DashboardLayout>
+      element: auth ? (
+        <DashboardLayout setAuth={setAuth}>
           <Suspense>
             <Outlet />
           </Suspense>
         </DashboardLayout>
-      ),
+      ) : <Navigate to="/login" state={{ from: location }} replace />,
       children: [
         { path: "dashboard", element: <Home />, index: true },
         { path: "anggota", element: <AnggotaPage /> },
@@ -55,7 +67,19 @@ export default function Router() {
     },
     {
       path: "login",
-      element: <LoginPage />,
+      element: auth ? <Navigate to="/" state={{ from: location }} replace /> : <LoginPage setAuth={setAuth} />,
+    },
+    {
+      path: "signup",
+      element: auth ? <Navigate to="/" state={{ from: location }} replace /> : <SignupPage setAuth={setAuth} />,
+    },
+    {
+      path: "activate",
+      element: auth ? <Navigate to="/" state={{ from: location }} replace /> : <ActivatePage setAuth={setAuth} />,
+    },
+    {
+      path: "verified",
+      element: auth ? <Navigate to="/" state={{ from: location }} replace /> : <VerifiedPage setAuth={setAuth} />,
     },
     {
       path: "404",
