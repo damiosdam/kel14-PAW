@@ -5,7 +5,7 @@ import DashboardLayout from "../layouts/dashboard";
 import CreateProposal from "../pages/ProposalPage/CreateProposal";
 import ProposalView from "../pages/ProposalPage/ProposalView";
 
-export const Home = lazy(() => import("../pages/app"));
+export const Home = lazy(() => import("../pages/dashboard"));
 export const AnggotaPage = lazy(() => import("../pages/anggota"));
 export const TambahAnggota = lazy(() => import("../pages/anggota/tambah"));
 export const DetailAnggota = lazy(() => import("../pages/anggota/detail"));
