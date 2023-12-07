@@ -7,6 +7,8 @@ import ProposalView from "../pages/ProposalPage/ProposalView";
 
 export const Home = lazy(() => import("../pages/app"));
 export const AnggotaPage = lazy(() => import("../pages/anggota"));
+export const TambahAnggota = lazy(() => import("../pages/anggota/tambah"));
+export const DetailAnggota = lazy(() => import("../pages/anggota/detail"));
 export const InventarisPage = lazy(() => import("../pages/inventaris"));
 export const TambahInventaris = lazy(() =>
   import("../pages/inventaris/tambah")
