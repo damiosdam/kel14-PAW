@@ -166,4 +166,4 @@ Endpoint | HTTP Method | Description
 3. [Materi Presentasi](https://docs.google.com/presentation/d/158r2mtnLMvyeWrQhYboaQXjowZlaHC7ZF4SXPaqmgEs/edit?usp=sharing)
 4. [Video Presentasi Backend](https://drive.google.com/file/d/1ELj7Nc8wTN4cEm0nA99hqUS34H53S8VV/view?usp=sharing)
 5. [Video Presentasi Final](https://drive.google.com/file/d/1wZxqhNQhSVLvGm8-GKQyyySmXipjBrX0/view?usp=sharing)
-6. [Need env file?](https://github.com/Maulana-anjari)
+6. [Need env file? please contact](https://github.com/Maulana-anjari)
