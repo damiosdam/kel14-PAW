@@ -18,7 +18,7 @@ exports.emailActivation = (token) => {
     </h1>
 
     <a
-    href="${client}/auth/verified?user=${token}"
+    href="${client}/verified?user=${token}"
     style="
         text-decoration: underline;
         display: inline-block;
@@ -34,7 +34,7 @@ exports.emailActivation = (token) => {
         margin: 0;
         "
     >
-        ${client}/auth/verified?user=${token}
+        ${client}/verified?user=${token}
     </p>
     </a>
     `
@@ -58,7 +58,7 @@ exports.emailResetPassword = (token) => {
     </h1>
 
     <a
-    href="${client}/auth/resetpassword/newpassword?user=${token}"
+    href="${client}/resetpassword/newpassword?user=${token}"
     style="
         text-decoration: underline;
         display: inline-block;
@@ -76,7 +76,7 @@ exports.emailResetPassword = (token) => {
         margin: 0;
         "
     >
-        ${client}/auth/resetpassword/newpassword?user=${token}
+        ${client}/resetpassword/newpassword?user=${token}
     </p>
     </a>
     `
