@@ -2,20 +2,15 @@ import Delete from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
 import {
     ButtonGroup,
-    Card,
-    CardContent,
     Container,
-    Fade,
     IconButton,
-    Modal,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
-    Typography
+    TableRow
 } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
@@ -25,8 +20,10 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom";
 import Top from '../../components/top';
+import authHeader from '../../services/auth-header';
 
-export default function AppPage() {
+export default function Anggota() {
+    const URL = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_DEV : process.env.REACT_APP_API_PROD;
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const ThumbnailImage = styled('img')({
@@ -37,7 +34,7 @@ export default function AppPage() {
 
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    
+
     const handleThumbnailClick = (thumbnailUrl) => {
         setSelectedThumbnail(thumbnailUrl);
         setOpenModal(true);
@@ -54,7 +51,7 @@ export default function AppPage() {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get('http://localhost:5000/api/v1/anggota');
+            const result = await axios.get(`${URL}/api/v1/anggota`, { headers: authHeader() });
             setData(result?.data?.data);
         } catch (error) {
             Notify.failure("Error fetching data: ", error);
@@ -76,7 +73,7 @@ export default function AppPage() {
             async function (result) {
                 if (result) {
                     try {
-                        await axios.delete(`http://localhost:5000/api/v1/anggota/${itemId}`);
+                        await axios.delete(`${URL}/api/v1/anggota/${itemId}`, { headers: authHeader() });
                         Notify.success('Data berhasil dihapus');
                         fetchData();
                     } catch (error) {
@@ -87,8 +84,8 @@ export default function AppPage() {
             }
         );
     };
-    
-    
+
+
     return (
         <>
             <Helmet>
@@ -166,7 +163,7 @@ export default function AppPage() {
                     </Table>
                 </TableContainer>
             </Container>
-            
+
         </>
     );
 }
