@@ -194,11 +194,11 @@ export default function Anggota() {
                         }}>
                             <CardContent>
                                 <Typography variant="h6" align="center" gutterBottom>
-                                    Foto Barang
+                                    Foto Anggota
                                 </Typography>
                                 <img
                                     src={selectedThumbnail}
-                                    alt="Foto Barang"
+                                    alt="Foto Anggota"
                                     style={{ width: '100%', height: '100%', maxHeight: '500px' }}
                                 />
                             </CardContent>
