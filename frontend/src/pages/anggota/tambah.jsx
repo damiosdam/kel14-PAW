@@ -77,6 +77,7 @@ export default function AppPage() {
             formData.prodiAnggota === '' ||
             formData.nimAnggota === '' ||
             formData.emailAnggota === '' ||
+            formData.posisiAnggota === '' ||
             formData.foto === null ||
             formData.statusAnggota === '' ||
             formData.nomorHpAnggota === '' ||
@@ -100,6 +101,7 @@ export default function AppPage() {
         formDataToSend.append('prodiAnggota', formData.prodiAnggota);
         formDataToSend.append('nimAnggota', formData.nimAnggota);
         formDataToSend.append('emailAnggota', formData.emailAnggota);
+        formDataToSend.append('posisiAnggota', formData.posisiAnggota);
         formDataToSend.append('foto', formData.foto);
         formDataToSend.append('statusAnggota', formData.statusAnggota);
         formDataToSend.append('nomorHpAnggota', formData.nomorHpAnggota);

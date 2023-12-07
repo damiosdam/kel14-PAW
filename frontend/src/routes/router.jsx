@@ -53,7 +53,7 @@ export default function Router() {
       children: [
         { path: "dashboard", element: <Home />, index: true },
         { path: "anggota", element: <AnggotaPage /> },
-        { path: "anggota/:id", element: <AnggotaPage /> },
+        { path: "anggota/:id", element: <DetailAnggota /> },
         { path: "anggota/tambah", element: <TambahAnggota /> },
         { path: "inventaris", element: <InventarisPage /> },
         { path: "inventaris/:id", element: <DetailInventaris /> },
