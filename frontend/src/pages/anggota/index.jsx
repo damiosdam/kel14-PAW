@@ -2,15 +2,20 @@ import Delete from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
 import {
     ButtonGroup,
+    Card,
+    CardContent,
     Container,
+    Fade,
     IconButton,
+    Modal,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
@@ -67,20 +72,27 @@ export default function Anggota() {
     const handleDelete = (itemId) => {
         Confirm.show(
             'Konfirmasi',
-            'Apakah anda yakin ingin menghapus data ini?',
+            'Apakah Anda yakin ingin menghapus item ini?',
             'Ya',
             'Tidak',
-            async function (result) {
-                if (result) {
-                    try {
-                        await axios.delete(`${URL}/api/v1/anggota/${itemId}`, { headers: authHeader() });
-                        Notify.success('Data berhasil dihapus');
+            () => {
+                setData((prevData) => prevData.filter(item => item._id !== itemId));
+                // Panggil API untuk menghapus item dengan ID tertentu
+                axios
+                    .delete(`${URL}/api/v1/anggota/${itemId}`, { headers: authHeader() })
+                    .then((response) => {
+                        Notify.success('Item berhasil dihapus');
+                        // Panggil fungsi untuk memperbarui data setelah penghapusan
                         fetchData();
-                    } catch (error) {
-                        Notify.failure('Data gagal dihapus');
+                    })
+                    .catch((error) => {
+                        Notify.failure('Error saat menghapus item:', error);
                         fetchData();
-                    }
-                }
+                    });
+
+            },
+            () => {
+                fetchData();
             }
         );
     };
@@ -109,6 +121,7 @@ export default function Anggota() {
                                 <TableCell align="right">TTL</TableCell>
                                 <TableCell align="right">Asal</TableCell>
                                 <TableCell align="right">Periode</TableCell>
+                                <TableCell align="right">Aksi</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -162,6 +175,36 @@ export default function Anggota() {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    closeAfterTransition
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Fade in={openModal} align="center">
+                        <Card style={{
+                            maxWidth: '80%',
+                            maxHeight: '80%',
+                            overflow: 'hidden',
+                            backgroundColor: 'white'
+                        }}>
+                            <CardContent>
+                                <Typography variant="h6" align="center" gutterBottom>
+                                    Foto Barang
+                                </Typography>
+                                <img
+                                    src={selectedThumbnail}
+                                    alt="Foto Barang"
+                                    style={{ width: '100%', height: '100%', maxHeight: '500px' }}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Fade>
+                </Modal>
             </Container>
 
         </>

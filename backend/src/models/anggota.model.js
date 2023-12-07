@@ -26,6 +26,7 @@ const AnggotaSchema = new Schema({
     },
     posisiAnggota : {
         type: String,
+        required: [true, 'Tolong isi Posisi Anggota!']
     },
     foto : {
         type: Object,
@@ -33,6 +34,7 @@ const AnggotaSchema = new Schema({
     },
     statusAnggota : {
         type: String,
+        required: [true, 'Tolong isi Status Anggota!']
     },
     nomorHpAnggota : {
         type: String,
