@@ -82,7 +82,7 @@ export default function Router() {
     },
     {
       path: "verified",
-      element: auth ? <Navigate to="/" state={{ from: location }} replace /> : <VerifiedPage setAuth={setAuth} />,
+      element: <VerifiedPage setAuth={setAuth} />,
     },
     {
       path: "404",
