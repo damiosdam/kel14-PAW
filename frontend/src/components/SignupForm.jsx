@@ -70,12 +70,15 @@ const SignupForm = ({ setAuth }) => {
           navigate('/activate', { replace: true });
         })
         .catch((error) => {
-          if (error.response.data.message > 1) {
-            error.response.data.message.forEach(element => {
-              Notify.failure(element.msg);
-            });
-          } else {
-            Notify.failure(error.response.data.message);
+          if (error?.response?.data?.message) {
+            if (Array.isArray(error.response.data.message)) {
+              error.response.data.message.forEach(element => {
+                Notify.failure(element.msg);
+                console.log(element.msg);
+              });
+            } else {
+              Notify.failure(error.response.data.message);
+            }
           }
           setAuth(false);
           navigate('/signup', { replace: true });
